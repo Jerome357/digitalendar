@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -39,7 +41,7 @@ class Event
     /**
      * @ORM\Column(type="datetime")
      */
-    private $date_start;
+    private $dateStart;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -49,7 +51,7 @@ class Event
     /**
      * @ORM\Column(type="datetime")
      */
-    private $date_end;
+    private $dateEnd;
 
     /**
      * @ORM\Column(type="decimal", precision=10, scale=2)
@@ -59,13 +61,35 @@ class Event
     /**
      * @ORM\Column(type="boolean")
      */
-    private $is_valid;
+    private $isValid;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\City", inversedBy="events")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $city_id;
+    private $city;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="events")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Participant", mappedBy="event", orphanRemoval=true)
+     */
+    private $participants;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\language", inversedBy="events")
+     */
+    private $languages;
+
+    public function __construct()
+    {
+        $this->participants = new ArrayCollection();
+        $this->languages = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -122,12 +146,12 @@ class Event
 
     public function getDateStart(): ?\DateTimeInterface
     {
-        return $this->date_start;
+        return $this->dateStart;
     }
 
-    public function setDateStart(\DateTimeInterface $date_start): self
+    public function setDateStart(\DateTimeInterface $dateStart): self
     {
-        $this->date_start = $date_start;
+        $this->dateStart = $dateStart;
 
         return $this;
     }
@@ -146,12 +170,12 @@ class Event
 
     public function getDateEnd(): ?\DateTimeInterface
     {
-        return $this->date_end;
+        return $this->dateEnd;
     }
 
-    public function setDateEnd(\DateTimeInterface $date_end): self
+    public function setDateEnd(\DateTimeInterface $dateEnd): self
     {
-        $this->date_end = $date_end;
+        $this->dateEnd = $dateEnd;
 
         return $this;
     }
@@ -170,24 +194,93 @@ class Event
 
     public function getIsValid(): ?bool
     {
-        return $this->is_valid;
+        return $this->isValid;
     }
 
-    public function setIsValid(bool $is_valid): self
+    public function setIsValid(bool $isValid): self
     {
-        $this->is_valid = $is_valid;
+        $this->isValid = $isValid;
 
         return $this;
     }
 
-    public function getCityId(): ?City
+    public function getCity(): ?City
     {
-        return $this->city_id;
+        return $this->city;
     }
 
-    public function setCityId(?City $city_id): self
+    public function setCity(?City $city): self
     {
-        $this->city_id = $city_id;
+        $this->city = $city;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Participant[]
+     */
+    public function getParticipants(): Collection
+    {
+        return $this->participants;
+    }
+
+    public function addParticipant(Participant $participant): self
+    {
+        if (!$this->participants->contains($participant)) {
+            $this->participants[] = $participant;
+            $participant->setEvent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParticipant(Participant $participant): self
+    {
+        if ($this->participants->contains($participant)) {
+            $this->participants->removeElement($participant);
+            // set the owning side to null (unless already changed)
+            if ($participant->getEvent() === $this) {
+                $participant->setEvent(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|language[]
+     */
+    public function getLanguages(): Collection
+    {
+        return $this->languages;
+    }
+
+    public function addLanguage(language $language): self
+    {
+        if (!$this->languages->contains($language)) {
+            $this->languages[] = $language;
+        }
+
+        return $this;
+    }
+
+    public function removeLanguage(language $language): self
+    {
+        if ($this->languages->contains($language)) {
+            $this->languages->removeElement($language);
+        }
 
         return $this;
     }

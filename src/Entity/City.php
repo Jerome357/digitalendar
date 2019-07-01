@@ -24,7 +24,7 @@ class City
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Event", mappedBy="city_id")
+     * @ORM\OneToMany(targetEntity="App\Entity\Event", mappedBy="city")
      */
     private $events;
 
@@ -62,7 +62,7 @@ class City
     {
         if (!$this->events->contains($event)) {
             $this->events[] = $event;
-            $event->setCityId($this);
+            $event->setCity($this);
         }
 
         return $this;
@@ -73,8 +73,8 @@ class City
         if ($this->events->contains($event)) {
             $this->events->removeElement($event);
             // set the owning side to null (unless already changed)
-            if ($event->getCityId() === $this) {
-                $event->setCityId(null);
+            if ($event->getCity() === $this) {
+                $event->setCity(null);
             }
         }
 
