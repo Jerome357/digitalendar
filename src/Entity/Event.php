@@ -61,7 +61,7 @@ class Event
     /**
      * @ORM\Column(type="boolean")
      */
-    private $isValid;
+    private $isValid = false;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\City", inversedBy="events")
