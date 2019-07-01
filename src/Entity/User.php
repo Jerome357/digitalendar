@@ -8,7 +8,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  */
-class user implements UserInterface
+class User implements UserInterface
 {
     /**
      * @ORM\Id()

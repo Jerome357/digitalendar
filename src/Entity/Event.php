@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\EventRepository")
  */
-class event
+class Event
 {
     /**
      * @ORM\Id()
@@ -60,6 +60,12 @@ class event
      * @ORM\Column(type="boolean")
      */
     private $is_valid;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\City", inversedBy="events")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $city_id;
 
     public function getId(): ?int
     {
@@ -170,6 +176,18 @@ class event
     public function setIsValid(bool $is_valid): self
     {
         $this->is_valid = $is_valid;
+
+        return $this;
+    }
+
+    public function getCityId(): ?City
+    {
+        return $this->city_id;
+    }
+
+    public function setCityId(?City $city_id): self
+    {
+        $this->city_id = $city_id;
 
         return $this;
     }
