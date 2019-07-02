@@ -44,51 +44,51 @@ class Event
     private $dateStart;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $url;
-
-    /**
      * @ORM\Column(type="datetime")
      */
     private $dateEnd;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=2)
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $url;
+
+    /**
+     * @ORM\Column(type="decimal", precision=12, scale=2)
      */
     private $price;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $isValid = false;
+    private $isValid;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\City", inversedBy="events")
+     * @ORM\ManyToOne(targetEntity="App\Entity\city", inversedBy="events")
      * @ORM\JoinColumn(nullable=false)
      */
     private $city;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="events")
+     * @ORM\ManyToOne(targetEntity="App\Entity\user", inversedBy="events")
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Participant", mappedBy="event", orphanRemoval=true)
+     * @ORM\ManyToMany(targetEntity="App\Entity\language", inversedBy="events")
+     */
+    private $language;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Participant", mappedBy="event")
      */
     private $participants;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\language", inversedBy="events")
-     */
-    private $languages;
-
     public function __construct()
     {
+        $this->language = new ArrayCollection();
         $this->participants = new ArrayCollection();
-        $this->languages = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -156,18 +156,6 @@ class Event
         return $this;
     }
 
-    public function getUrl(): ?string
-    {
-        return $this->url;
-    }
-
-    public function setUrl(?string $url): self
-    {
-        $this->url = $url;
-
-        return $this;
-    }
-
     public function getDateEnd(): ?\DateTimeInterface
     {
         return $this->dateEnd;
@@ -176,6 +164,18 @@ class Event
     public function setDateEnd(\DateTimeInterface $dateEnd): self
     {
         $this->dateEnd = $dateEnd;
+
+        return $this;
+    }
+
+    public function getUrl(): ?string
+    {
+        return $this->url;
+    }
+
+    public function setUrl(?string $url): self
+    {
+        $this->url = $url;
 
         return $this;
     }
@@ -197,33 +197,59 @@ class Event
         return $this->isValid;
     }
 
-    public function setIsValid(bool $isValid): self
+    public function setIsValid(bool $isValid = false): self
     {
         $this->isValid = $isValid;
 
         return $this;
     }
 
-    public function getCity(): ?City
+    public function getCity(): ?city
     {
         return $this->city;
     }
 
-    public function setCity(?City $city): self
+    public function setCity(?city $city): self
     {
         $this->city = $city;
 
         return $this;
     }
 
-    public function getUser(): ?User
+    public function getUser(): ?user
     {
         return $this->user;
     }
 
-    public function setUser(?User $user): self
+    public function setUser(?user $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|language[]
+     */
+    public function getLanguage(): Collection
+    {
+        return $this->language;
+    }
+
+    public function addLanguage(language $language): self
+    {
+        if (!$this->language->contains($language)) {
+            $this->language[] = $language;
+        }
+
+        return $this;
+    }
+
+    public function removeLanguage(language $language): self
+    {
+        if ($this->language->contains($language)) {
+            $this->language->removeElement($language);
+        }
 
         return $this;
     }
@@ -254,32 +280,6 @@ class Event
             if ($participant->getEvent() === $this) {
                 $participant->setEvent(null);
             }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|language[]
-     */
-    public function getLanguages(): Collection
-    {
-        return $this->languages;
-    }
-
-    public function addLanguage(language $language): self
-    {
-        if (!$this->languages->contains($language)) {
-            $this->languages[] = $language;
-        }
-
-        return $this;
-    }
-
-    public function removeLanguage(language $language): self
-    {
-        if ($this->languages->contains($language)) {
-            $this->languages->removeElement($language);
         }
 
         return $this;

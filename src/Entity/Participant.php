@@ -22,13 +22,13 @@ class Participant
     private $createdAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="participants")
+     * @ORM\ManyToOne(targetEntity="App\Entity\user", inversedBy="participants")
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Event", inversedBy="participants")
+     * @ORM\ManyToOne(targetEntity="App\Entity\event", inversedBy="participants")
      * @ORM\JoinColumn(nullable=false)
      */
     private $event;

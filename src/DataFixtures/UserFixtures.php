@@ -2,60 +2,40 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UserFixtures extends Fixture
 {
+    private $encoder;
+
+    /**
+     * UserFixtures constructor.
+     * @param $encoder
+     */
+    public function __construct(UserPasswordEncoderInterface $encoder)
+    {
+        $this->encoder = $encoder;
+    }
+
     public function load(ObjectManager $manager)
     {
-        $user1 = newUser();
-        $user1 -> setUsername("Daniel");
-        $user1 -> setEmail("danieldu35@hotmail.com");
-        $user1 -> setPassword("1234");
-        $user1 -> setRoles(true);
-        $manager->persist($user1);
-        $this->setReference("User1",$user1);
+        $admin = new User();
+        $admin->setEmail("Dimitri.p53@live.fr");
+        $password = $this->encoder->encodePassword($admin, '1234');
+        $admin->setPassword($password);
+        $admin->setRoles(["ROLE_ADMIN"]);
+        $manager->persist($admin);
+        $this->setReference("user-admin",$admin);
 
-        $user2 = newUser();
-        $user2 -> setUsername("Fabien");
-        $user2 -> setEmail("fabien01@hotmail.com");
-        $user2 -> setPassword;
-        $user2 -> setRoles(false);
-        $manager->persist($user2);
-        $this->setReference("User2",$user2);
-
-        $user3 = newUser();
-        $user3 -> setUsername("Nicolas");
-        $user3 -> setEmail("nicolas88@hotmail.com");
-        $user3 -> setPassword("1234");
-        $user2 -> setRoles(false);
-        $manager->persist($user3);
-        $this->setReference("User3",$user3);
-
-        $user4 = newUser();
-        $user4 -> setUsername("Martin");
-        $user4 -> setEmail("martin35@hotmail.com");
-        $user4 -> setPassword();
-        $user2 -> setRoles(false);
-        $manager->persist($user4);
-        $this->setReference("User4",$user4);
-
-        $user5 = newUser();
-        $user5 -> setUsername("Marie");
-        $user5 -> setEmail("marie45@hotmail.com");
-        $user5 -> setPassword("marie5555");
-        $user2 -> setRoles(false);
-        $manager->persist($user5);
-        $this->setReference("User5",$user5);
-
-
-
-
-
-
-
-
+        $john = new User();
+        $john->setEmail("john.doe@gmail.com");
+        $password = $this->encoder->encodePassword($john, '1234');
+        $john->setPassword($password);
+        $manager->persist($john);
+        $this->setReference("user-john",$john);
 
         $manager->flush();
     }

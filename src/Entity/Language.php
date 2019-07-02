@@ -24,7 +24,7 @@ class Language
     private $name;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Event", mappedBy="languages")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Event", mappedBy="language")
      */
     private $events;
 
