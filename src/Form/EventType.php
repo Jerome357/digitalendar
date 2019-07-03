@@ -17,14 +17,12 @@ class EventType extends AbstractType
     {
         $builder
             ->add('title')
-            ->add('picture', FileType::class, [
+            ->add('pictureFile', FileType::class, [
                 'mapped' => false,
                 'required' => false
             ])
             ->add('city')
-            ->add('description', TextareaType::class, [
-                'attr' => ['class' => 't'],
-            ])
+            ->add('description', TextareaType::class)
             ->add('dateStart', DateType::class)
             ->add('dateEnd', DateType::class)
             ->add('url')
