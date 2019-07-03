@@ -3,7 +3,11 @@
 namespace App\Form;
 
 use App\Entity\Event;
+use App\Service\Slugger;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -13,16 +17,19 @@ class EventType extends AbstractType
     {
         $builder
             ->add('title')
-            ->add('picture')
-            ->add('description')
-            ->add('dateStart')
-            ->add('dateEnd')
+            ->add('picture', FileType::class, [
+                'mapped' => false,
+                'required' => false
+            ])
+            ->add('city')
+            ->add('description', TextareaType::class, [
+                'attr' => ['class' => 't'],
+            ])
+            ->add('dateStart', DateType::class)
+            ->add('dateEnd', DateType::class)
             ->add('url')
             ->add('price')
-            ->add('city')
-            ->add('user')
-            ->add('language')
-        ;
+            ->add('language');
     }
 
     public function configureOptions(OptionsResolver $resolver)
