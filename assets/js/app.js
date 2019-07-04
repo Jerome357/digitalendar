@@ -1,6 +1,5 @@
 
-// A theme is also required
-import  'tinymce/themes/modern/theme';
+
 /*
  * Welcome to your app's main JavaScript file!
  *
@@ -23,9 +22,10 @@ console.log('Hello Webpack Encore! Edit me in assets/js/app.js');
 
 $(document).ready(function() {
 
-    tinymce.init({
-        selector: 'textarea'
-    });
+   // tinymce.init({
+    // selector: 'textarea'
+    // });
+
 
     $('select').select2();
 

@@ -41,7 +41,7 @@ class EventFixtures extends Fixture implements DependentFixtureInterface
 
         $event2 = new Event();
         $event2->setTitle("Open Source Summit");
-        $event2->setSlug($this->slugger->slugify($event1->getTitle()));
+        $event2->setSlug($this->slugger->slugify($event2->getTitle()));
         $event2->setPicture("gen.jpg");
         $event2->setCity($this->getReference("city-rennes"));
         $event2->addLanguage($this->getReference("language-english"));
@@ -57,7 +57,7 @@ class EventFixtures extends Fixture implements DependentFixtureInterface
 
         $event3 = new Event();
         $event3->setTitle("Big Data Paris");
-        $event3->setSlug($this->slugger->slugify($event1->getTitle()));
+        $event3->setSlug($this->slugger->slugify($event3->getTitle()));
         $event3->setPicture("lengow.jpg");
         $event3->setCity($this->getReference("city-paris"));
         $event3->addLanguage($this->getReference("language-french"));
