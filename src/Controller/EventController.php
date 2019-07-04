@@ -67,15 +67,15 @@ class EventController extends AbstractController
 
     /**
      * @Route("/{slug}", name="event_show", methods={"GET"})
-     * @IsGranted("ROLE_USER")
      */
     public function show(Event $event): Response
     {
-        return $this->render('event/show.html.twig', [
+        return $this->render('event/show.html.twig',   [
             'event' => $event,
             "slug" => $event->getSlug(),
         ]);
     }
+
 
     /**
      * @Route("/{slug}/edit", name="event_edit", methods={"GET","POST"})
