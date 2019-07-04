@@ -21,6 +21,5 @@ class DefaultController extends AbstractController
             'events' => $events
         ]);
     }
-
 }
 
